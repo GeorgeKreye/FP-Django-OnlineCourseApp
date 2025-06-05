@@ -14,7 +14,7 @@ logger = logging.getLogger(__name__)
 
 def submit(request, course_id):
     course = get_object_or_404(Course, pk=course_id)
-    user = request.OBJECT
+    user = request.user
     entrollment = Enrollment.objects.get(user=user,course=course)
     submission = Submission.objects.create(enrollment=entrollment)
     choices = extract_answers(request)
@@ -36,7 +36,7 @@ def show_exam_result(request,course_id,submission_id):
 
         #Check if the selected choices are the correct choices
         if set(correct_choices) == set(selected_choices):
-            total_score = question.grade
+            total_score += question.grade
 
     context['course'] = course
     context['grade'] = total_score
